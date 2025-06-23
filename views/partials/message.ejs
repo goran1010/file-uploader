@@ -1,0 +1,9 @@
+<% if (success && success.length > 0) { %>
+<div class="alert alert-success">
+  <p><%= success[0] %></p>
+</div>
+<% } %> <% if (fail && fail.length > 0) { %>
+<div class="alert alert-danger">
+  <p><%= fail[0] %></p>
+</div>
+<% } %>
