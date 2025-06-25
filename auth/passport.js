@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import pool from "../db/pool.js";
+import prisma from "../db/prisma.js";
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

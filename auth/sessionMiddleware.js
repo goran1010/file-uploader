@@ -1,24 +1,24 @@
-import session from "express-session";
-import connectPgSimple from "connect-pg-simple";
-const PgSession = connectPgSimple(session);
-import pool from "../db/pool.js";
 import dotenv from "dotenv";
 dotenv.config();
 const NUMBER_OF_DAYS = 30;
-
 const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
-const sessionMiddleware = session({
-  store: new PgSession({
-    pool: pool,
-    tableName: "session",
-  }),
-  secret: "TEMP_SECRET",
-  resave: false,
-  saveUninitialized: false,
+import expressSession from "express-session";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import { PrismaClient } from "@prisma/client";
+
+const sessionMiddleware = expressSession({
   cookie: {
     maxAge: NUMBER_OF_DAYS * 24 * 60 * 60 * 1000,
   },
+  secret: COOKIE_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  store: new PrismaSessionStore(new PrismaClient(), {
+    checkPeriod: 2 * 60 * 1000,
+    dbRecordIdIsSessionId: true,
+    dbRecordIdFunction: undefined,
+  }),
 });
 
 export default sessionMiddleware;
