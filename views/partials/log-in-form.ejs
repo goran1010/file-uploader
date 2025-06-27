@@ -1,0 +1,20 @@
+<main>
+  <% if(locals.error) { %>
+  <h2><%= error %></h2>
+  <% } %> <% if(locals.successMsg) { %>
+  <h2><%= successMsg %></h2>
+  <% } %>
+  <h2>You need to log in to upload files !</h2>
+  <form action="/log-in" method="post">
+    <div class="username">
+      <label for="username">Username: </label>
+      <input type="text" name="username" id="username" />
+    </div>
+    <div class="password">
+      <label for="password">Password: </label>
+      <input type="password" name="password" id="password" />
+    </div>
+    <button type="submit">Log In</button>
+  </form>
+  Are you not a member? Create a free account <a href="/register">here</a> !
+</main>

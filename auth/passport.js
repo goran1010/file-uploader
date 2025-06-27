@@ -9,9 +9,11 @@ passport.use(
       const user = await prisma.user.findFirst({ where: { username } });
       if (!user) return done(null, false, { message: "Incorrect username" });
 
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) return done(null, false, { message: "Incorrect password" });
-
+      // const match = await bcrypt.compare(password, user.password);
+      if (password !== user.password) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+      console.log("got it");
       return done(null, user);
     } catch (err) {
       return done(err);
