@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My folders</title>
+  </head>
+  <body>
+    <main>
+      <%- include("./partials/upload-form") %>
+      <div>
+        <% for (const key in allFolders) {%> <% if
+        (Object.prototype.hasOwnProperty.call(allFolders, key)) {%> <% const
+        element = allFolders[key]; %>
+        <p><%= element %></p>
+        <% }%> <%} %>
+      </div>
+      <a href="/">Back to Home</a>
+    </main>
+  </body>
+</html>

@@ -24,6 +24,8 @@ indexRouter.post(
 
 indexRouter.get("/download", indexController.download);
 
+indexRouter.get("/folders", isLoggedIn, indexController.folders);
+
 indexRouter.use("/register", registerRouter);
 
 indexRouter.use((req, res, next) => {
