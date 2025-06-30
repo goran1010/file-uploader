@@ -38,7 +38,7 @@ model Folder {
 model File {
   id           String  @id @default(uuid())
   originalname String
-  path         String
+  path         String  @unique
   size         String
   Folder       Folder? @relation(fields: [folderId], references: [id])
   folderId     String?

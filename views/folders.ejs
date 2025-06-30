@@ -7,13 +7,26 @@
   </head>
   <body>
     <main>
-      <%- include("./partials/upload-form") %>
+      <header>
+        <form action="/create-new-folder" method="post">
+          <legend>Create new folder</legend>
+          <div class="new-folder">
+            <label for="name">Name: </label
+            ><input type="text" name="name" id="name" />
+            <button type="submit">Create</button>
+          </div>
+        </form>
+      </header>
       <div>
-        <% for (const key in allFolders) {%> <% if
-        (Object.prototype.hasOwnProperty.call(allFolders, key)) {%> <% const
-        element = allFolders[key]; %>
-        <p><%= element %></p>
-        <% }%> <%} %>
+        <% allFolders.folders.forEach(element => { %>
+        <a href="/folders/<%= element.name %>"><%= element.name %></a>
+        <form action="/rename-folder" method="post">
+          <input type="text" name="name" />
+          <input type="hidden" name="id" value="<%=element.id%>" />
+          <button type="submit">Rename</button>
+        </form>
+        <a href="/delete-folder/<%=element.id%>">Delete</a>
+        <% }); %>
       </div>
       <a href="/">Back to Home</a>
     </main>

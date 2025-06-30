@@ -26,6 +26,18 @@ indexRouter.get("/download", indexController.download);
 
 indexRouter.get("/folders", isLoggedIn, indexController.folders);
 
+indexRouter.post(
+  "/create-new-folder",
+  isLoggedIn,
+  indexController.createNewFolder
+);
+
+indexRouter.get("/delete-folder/:id", isLoggedIn, indexController.deleteFolder);
+
+indexRouter.post("/rename-folder", isLoggedIn, indexController.renameFolder);
+
+indexRouter.get("/folders/:name", isLoggedIn, indexController.viewFolder);
+
 indexRouter.use("/register", registerRouter);
 
 indexRouter.use((req, res, next) => {
