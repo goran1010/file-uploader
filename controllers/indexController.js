@@ -3,6 +3,8 @@ import * as fileUploadModel from "../models/fileUploadModel.js";
 import prisma from "../db/prisma.js";
 import createNewFolderModel from "../models/createNewFolderModel.js";
 import * as folderModel from "../models/folderModel.js";
+import supabase from "../db/supabase.js";
+import { Readable } from "stream";
 
 class indexController {
   home(req, res, next) {
@@ -12,29 +14,48 @@ class indexController {
     });
   }
   async fileUpload(req, res, next) {
-    try {
-      const { originalname, path, size } = req.file;
-      const { folderId, folderName } = req.body;
-      const file = await fileUploadModel.uploadFile(
-        originalname,
-        path,
-        size,
-        folderId
-      );
-      res.redirect(`/folders/${folderName}`);
-    } catch (err) {
-      console.error(err);
-      res.redirect(`/folders/${folderName}`);
+    const { originalname, size, buffer } = req.file;
+    const { folderId, folderName } = req.body;
+
+    const { data, error } = await supabase.storage
+      .from("uploads")
+      .upload(`${originalname}`, buffer, {
+        contentType: req.file.mimetype,
+        upsert: false,
+      });
+
+    if (error || !data) {
+      console.error("Supabase upload error:", error?.message);
+      req.flash("error", "File upload failed");
+      return res.redirect(`/folders/${folderName}`);
     }
+    await fileUploadModel.uploadFile(originalname, data.path, size, folderId);
+    return res.redirect(`/folders/${folderName}`);
   }
+
   async download(req, res, next) {
-    const { filepath } = req.params;
-    const setPath = `${filepath[0]}/${filepath[1]}`;
+    const { id } = req.params;
     const filename = await prisma.file.findUnique({
-      where: { path: setPath },
+      where: { id: id },
     });
-    const file = path.resolve("uploads", filepath[1]);
-    res.download(file, filename.originalname);
+
+    const { data } = await supabase.storage
+      .from("uploads")
+      .download(`${filename.originalname}`);
+
+    const buffer = await data.arrayBuffer(); // convert blob to array buffer
+    const stream = Readable.from(Buffer.from(buffer)); // create readable stream
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${filename.originalname}"`
+    );
+    res.setHeader(
+      "Content-Type",
+      filename.mimetype || "application/octet-stream"
+    );
+
+    stream.pipe(res); // pipe to response
   }
   async folders(req, res, next) {
     const { id } = req.user;

@@ -12,7 +12,8 @@
     %>
     <p><%=file.originalname%></p>
     <p><%=file.size%></p>
-    <p><a href="/download/<%=file.path%>">Download</a></p>
+    <p><%=file.created%></p>
+    <p><a href="/download/<%=file.id%>">Download</a></p>
     <% }) %>
     <a href="/folders">Go back to all folders</a>
   </body>

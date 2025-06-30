@@ -7,7 +7,7 @@ import logOutController from "../controllers/logOutController.js";
 import isLoggedIn from "../auth/isLoggedIn.js";
 
 import multer from "multer";
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: multer.memoryStorage() });
 
 indexRouter.get("/", indexController.home);
 
@@ -22,7 +22,7 @@ indexRouter.post(
   indexController.fileUpload
 );
 
-indexRouter.get("/download/{*filepath}", indexController.download);
+indexRouter.get("/download/:id", indexController.download);
 
 indexRouter.get("/folders", isLoggedIn, indexController.folders);
 
