@@ -2,6 +2,8 @@
   <legend>Upload a file</legend>
   <form action="/upload-file" method="post" enctype="multipart/form-data">
     <input type="file" name="my-file" id="my-file" />
+    <input type="hidden" name="folderId" value="<%=folder.id%>" />
+    <input type="hidden" name="folderName" value="<%=folder.name%>" />
     <button type="submit">Upload the file</button>
   </form>
 </div>

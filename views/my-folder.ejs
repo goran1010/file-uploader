@@ -7,5 +7,13 @@
   </head>
   <body>
     <p>Folder name: <%=folder.name%></p>
+
+    <%- include("./partials/upload-form") %> <% folder.files.forEach((file) => {
+    %>
+    <p><%=file.originalname%></p>
+    <p><%=file.size%></p>
+    <p><a href="/download/<%=file.path%>">Download</a></p>
+    <% }) %>
+    <a href="/folders">Go back to all folders</a>
   </body>
 </html>

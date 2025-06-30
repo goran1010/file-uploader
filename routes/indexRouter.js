@@ -22,7 +22,7 @@ indexRouter.post(
   indexController.fileUpload
 );
 
-indexRouter.get("/download", indexController.download);
+indexRouter.get("/download/{*filepath}", indexController.download);
 
 indexRouter.get("/folders", isLoggedIn, indexController.folders);
 
