@@ -1,7 +1,9 @@
 import prisma from "../db/prisma.js";
+import bcrypt from "bcryptjs";
 
 export default async function createUserModel(req, res, next) {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  password = await bcrypt.hash(password, 10);
   await prisma.user.create({
     data: {
       username,
