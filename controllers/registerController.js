@@ -6,7 +6,12 @@ class RegisterController {
   }
 
   async newUser(req, res, next) {
-    await createUserModel(req, res, next);
+    try {
+      await createUserModel(req, res, next);
+      req.flash("success", "User created successfully!");
+    } catch (err) {
+      req.flash("fail", "User not created!");
+    }
     res.redirect("/");
   }
 }

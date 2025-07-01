@@ -7,11 +7,9 @@
     <title>Home Page</title>
   </head>
   <body>
-    <% if(!currentUser) { %> <%- include("./partials/log-in-form.ejs") %> <% }
-    %> <% if(currentUser) { %> <%- include("./partials/view-folders") %><a
-      href="/log-out"
-      >Log out!</a
-    >
+    <%- include("./partials/message") %> <% if(!currentUser) { %> <%-
+    include("./partials/log-in-form.ejs") %> <% } %> <% if(currentUser) { %> <%-
+    include("./partials/view-folders") %><a href="/log-out">Log out!</a>
     <%} %>
   </body>
 </html>
